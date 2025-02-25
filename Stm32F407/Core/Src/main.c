@@ -114,14 +114,16 @@ int main(void)
 	  /* 			Formula to Estimate Required Timeout
 	  * 			Transmission Time= Total Bits/Baud Rate
 	  * 			where, Total Bits = (Data Length * 10) (assuming 8-N-1 frame: 8 data bits + 1 start + 1 stop bit)
-	  * 			example sending 10 bytes at 9600 baud = 10*10/9600 = (approx)10.4 ms
+	  * 			example sending 10 bites at 9600 baud = 10*10/9600 = (approx)10.4 ms
 	  */
 	 HAL_UART_Transmit(&huart2, (const uint8_t *)"Hello from stm32", 17, 100);				// it is a blocking function which returns value HAL_OK if the task is completed before the mentioned timeout, otherwise returns HAL_timeout
-	 HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, pDataReceived, sizeof(pDataReceived) - 1, 200);
+	 HAL_Delay(200);
+	 HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, pDataReceived, 1, 500);
 	 if(status ==  HAL_OK){
 		uint8_t received_length = strlen((char *)pDataReceived);
 	  	pDataReceived[received_length] = '\0';
 	  	printf("Data Received= %s\n", pDataReceived);
+	  	HAL_UART_Transmit(&huart2, (const uint8_t *)"Data Received", 14, 100);
 	 }
 	 HAL_Delay(2000); 									//delay of 2 seconds
     //MX_USB_HOST_Process();
