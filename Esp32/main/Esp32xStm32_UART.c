@@ -70,9 +70,9 @@ static void rx_task(void *arg)
 }
 */
 
-void uart_send_data(const char *LOGIName,const char *data){
+void uart_send_data(const char *LOGIName, const char *data){
   uart_write_bytes(UART_NUM_1, data, strlen(data)); 
-  ESP_LOGI(LOGIName, "Data sent: %s",data);
+  ESP_LOGI(LOGIName, "Data sent: %s\n",data);
 }
 
 static void uart_task(void *arg){
