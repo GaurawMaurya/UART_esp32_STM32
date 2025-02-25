@@ -43,8 +43,10 @@ void init(void)
 }
 
 void uart_send_data(const char *LOGIName, const char *data){
-  uart_write_bytes(UART_NUM_1, data, strlen(data)); 
-  ESP_LOGI(LOGIName, "Data sent: %s\n",data);
+  int len = uart_write_bytes(UART_NUM_1, data, 17); 
+ if(len >= 0){
+    ESP_LOGI(LOGIName, "Data sent: %s\n",data);
+ }
 }
 
 static void uart_task(void *arg){
@@ -59,11 +61,13 @@ static void uart_task(void *arg){
             RxData[len] = '\0';
             ESP_LOGI(RX_TASK_TAG, "Data Received: %s\n", RxData);
 
+            vTaskDelay(pdMS_TO_TICKS(200));                //wait for 200 milli seconds
             //if data is received then send data
-            uart_send_data(TX_TASK_TAG, "Hello from ESP32\n");
+            if(strcmp((char *)RxData, "Hello from stm32") == 0)
+                uart_send_data(TX_TASK_TAG, "Hello from ESP32");
         }else{
 
-            ESP_LOGI(RX_TASK_TAG, "Data not recevide");
+            //ESP_LOGI(RX_TASK_TAG, "Data not recevide");
         }
 
         vTaskDelay(pdMS_TO_TICKS(200));                //wait for 200 milli seconds
