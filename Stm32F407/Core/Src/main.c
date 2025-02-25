@@ -111,21 +111,19 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  /*
-	   * 			Formula to Estimate Required Timeout
-	   * 			Transmission Time= Total Bits/Baud Rate
-	   * 			where, Total Bits = (Data Length * 10) (assuming 8-N-1 frame: 8 data bits + 1 start + 1 stop bit)
-	   * 			example sending 10 bytes at 9600 baud = 10*10/9600 = (approx)10.4 ms
-	   */
-	  HAL_UART_Transmit(&huart2, (const uint8_t *)"Hello from stm32", 17, 100);				// it is a blocking function which returns value HAL_OK if the task is completed before the mentioned timeout, otherwise returns HAL_timeout
-	  HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, pDataReceived, sizeof(pDataReceived) - 1, 200);
-	  if(status ==  HAL_OK){
-		  uint8_t received_length = strlen((char *)pDataReceived);
-		  pDataReceived[received_length] = '\0';
-
-		  printf("Data Received= %s\n", pDataReceived);
-	  }
-	  HAL_Delay(2000); 									//delay of 2 seconds
+	  /* 			Formula to Estimate Required Timeout
+	  * 			Transmission Time= Total Bits/Baud Rate
+	  * 			where, Total Bits = (Data Length * 10) (assuming 8-N-1 frame: 8 data bits + 1 start + 1 stop bit)
+	  * 			example sending 10 bytes at 9600 baud = 10*10/9600 = (approx)10.4 ms
+	  */
+	 HAL_UART_Transmit(&huart2, (const uint8_t *)"Hello from stm32", 17, 100);				// it is a blocking function which returns value HAL_OK if the task is completed before the mentioned timeout, otherwise returns HAL_timeout
+	 HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, pDataReceived, sizeof(pDataReceived) - 1, 200);
+	 if(status ==  HAL_OK){
+		uint8_t received_length = strlen((char *)pDataReceived);
+	  	pDataReceived[received_length] = '\0';
+	  	printf("Data Received= %s\n", pDataReceived);
+	 }
+	 HAL_Delay(2000); 									//delay of 2 seconds
     //MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
@@ -168,11 +166,11 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
